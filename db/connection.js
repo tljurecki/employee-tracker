@@ -1,6 +1,7 @@
 //import dependencies
 const mysql= require('mysql2');
 
+
 //conect to database
 const db = mysql.createConnection(
     {
