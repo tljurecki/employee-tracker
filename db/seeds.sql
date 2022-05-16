@@ -12,8 +12,8 @@ VALUES
 ('Accountant', 30000, 2),
 ('Financial Analyst', 90000, 2),
 ('Junior Developer', 50000, 3),
-('Lead Developer' 125000, 3);
-('Software Engineer', 175000, 3);
+('Lead Developer' 125000, 3),
+('Software Engineer', 175000, 3),
 ('Sales Lead', 60000, 4),
 ('Project Manager', 85000, 4);
 

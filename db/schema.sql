@@ -17,7 +17,7 @@ CREATE TABLE role (
     ON DELETE SET NULL
 );
 
-CREATE TABLE emploee (
+CREATE TABLE employee (
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     first_name VARCHAR(40) NOT NULL,
     last_name VARCHAR(40) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE emploee (
     FOREIGN KEY (role_id)
     REFERENCES role(id)
     ON DELETE SET NULL,
-    manager_id INTEGER NOT NULL,
+    manager_id INTEGER,
     FOREIGN KEY (manager_id)
     REFERENCES employee(id)
     ON DELETE SET NULL
