@@ -322,14 +322,14 @@ const addNewEmployee = () => {
                     inquirer.prompt([
                         {
                             type: 'list',
-                            name: 'manager',
+                            name: 'managerName',
                             message: 'Who is the manager for this employee?',
                             choices: managersList
                         }
                     ])
                     .then(managerSelected => {
-                        const manager = managerSelected.manager;
-                        params.push(manager);
+                        const empManager = managerSelected.managerName;
+                        params.push(empManager);
 
                         //add to employee table
                         const sql = `INSERT INTO employee (first_name, last_name, role_id, manger_id) Values (?, ?, ?, ?)`;
@@ -394,6 +394,60 @@ const editEmployee = () => {
                     connection.query(sql, params, (err, result) => {
                         if (err) throw err;
                         console.log('Employee info has been updated');
+
+                        displayEmployees();
+                    });
+                });
+            });
+        });
+    });
+};
+
+//function to edit the employee's  manager's info
+const editManager = () => {
+    const employeesSql = `SELECT * FROM employee`;
+
+    connection.promise().query(employeesSql, (err, data) => {
+        if (err) throw err;
+        const currentEmp = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'empName',
+                message: 'What employee would you like to update?',
+                choices: currentEmp
+            }
+        ])
+        .then(empSelected => {
+            const emp = empSelected.empName;
+            const params =[];
+            params.push(emp);
+
+            const managersSql = `SELECT * FROM employee`;
+
+            connection.promise().query(managersSql, (err, data) => {
+                if (err) throw err;
+
+                const managersList = data.map(({ id, first_name, last_name}) => ({ name: first_name + " " + last_name, value: id }));
+
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'managerName',
+                        message: "Who is the employee's manager?",
+                        choices: managersList
+                    }
+                ])
+                .then(managerSelected => {
+                    const empManager = managerSelected.managerName;
+                    params.push(empManager);
+
+                    const sql = `UPDATE employee SET manager_id =? WHERE id = ?`;
+
+                    connection.query(sql, params, (err, result) => {
+                        if (err) throw err;
+                        console.log('The manager for the employee has been updated');
 
                         displayEmployees();
                     });
